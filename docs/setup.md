@@ -2,13 +2,15 @@
 
 Time: about 30 minutes. You need free accounts on Make.com, Google and Brevo.
 
+**Fastest route:** import [`blueprints/website-lead-capture.blueprint.json`](../blueprints/website-lead-capture.blueprint.json) into Make.com, reconnect Google Sheets and Brevo, then follow steps 1, 2 and 4 below. The table in step 3 explains what each module does.
+
 ## 1. Google Sheet
 1. Create a sheet called **Leads**.
 2. Paste the header row from [`templates/lead-sheet-columns.csv`](../templates/lead-sheet-columns.csv) into row 1.
 
 ## 2. Brevo
 1. Contacts → Lists → create a list, e.g. **Website leads**.
-2. Contacts → Settings → add attributes `BUSINESS`, `CHALLENGE`, `SOURCE` (text).
+2. Contacts → Settings → add text attributes `SOURCE` and `PAGE`.
 3. Automations → create a workflow: trigger **Contact added to list "Website leads"** → send email 1 (the free guide) → wait 2 days → email 2 → wait 3 days → email 3 (invite to book a call).
 
 ## 3. Make.com scenario
@@ -16,8 +18,9 @@ Time: about 30 minutes. You need free accounts on Make.com, Google and Brevo.
 |---|---|---|
 | 1 | **Webhooks → Custom webhook** | Create a webhook, copy its URL. Click "Redetermine data structure" and submit the demo form once so Make learns the fields. |
 | 2 | **JSON → Parse JSON** | Only needed if the body arrives as text: parse `{{1.value}}`. |
-| 3 | **Google Sheets → Add a row** | Sheet **Leads**. Map each column to the matching field; set `status` to `new`. |
-| 4 | **Brevo → Create/Update a contact** | Email = `email`, list = **Website leads**, attributes `FIRSTNAME`, `SMS` (= `phone_clean`), `BUSINESS`, `CHALLENGE`, `SOURCE`. Turn on "update if exists". |
+| 3 | **Google Sheets → Add a row** | Sheet **Leads**. Map each column to the matching field; set Lead Score to `0` and Status to `New`. |
+| 4 | **Brevo → Create a contact** | Email = `email`, list = **Website leads**, attributes `FIRSTNAME` (= `name`), `SOURCE`, `PAGE`, `OPT_IN` = yes. Turn on "update enabled". |
+| 5 | **Error handler → Break** on the Brevo module | Retry automatically, 3 times, 15 minutes apart. |
 
 Turn the scenario **ON** and set scheduling to **Immediately**.
 

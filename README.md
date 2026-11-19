@@ -37,6 +37,8 @@ flowchart LR
 | Phone numbers cleaned into international format | Ready for WhatsApp or SMS follow-up later |
 | Email checked before sending | Fewer bounced follow-ups |
 | `text/plain` POST | Works from a static site with no CORS preflight or backend |
+| Brevo step retries automatically (3 times, 15 minutes apart) if Brevo is down | Leads still reach the email list after a short outage |
+| Sheet has Lead Score, Status and Last Follow-up columns | Ready for manual or automated follow-up tracking |
 | Owner keeps the data in their own Sheet and Brevo account | No lock-in |
 
 ## Tools
@@ -45,6 +47,7 @@ flowchart LR
 ## Repo contents
 | Path | What it is |
 |---|---|
+| [`blueprints/website-lead-capture.blueprint.json`](blueprints/website-lead-capture.blueprint.json) | The real production Make.com scenario (IDs and connections replaced with placeholders). Import it: Create scenario → ⋯ → Import Blueprint |
 | [`src/lead-capture.js`](src/lead-capture.js) | Form logic: validation, source tracking, phone cleaning, webhook POST |
 | [`src/lead-form.html`](src/lead-form.html) | Minimal demo form that uses the script |
 | [`templates/lead-sheet-columns.csv`](templates/lead-sheet-columns.csv) | Google Sheet header row |
